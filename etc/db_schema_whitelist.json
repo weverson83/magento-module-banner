@@ -1,0 +1,14 @@
+{
+    "banner": {
+        "column": {
+            "entity_id": true,
+            "content": true,
+            "enabled": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}
