@@ -1,0 +1,25 @@
+{
+    "name": "weverson83/module-banner",
+    "description": "Magento CMS Banner",
+    "type": "magento2-module",
+    "license": [
+        "proprietary"
+    ],
+    "authors":[
+        {
+            "name":"Weverson Cachinsky",
+            "email":"weversoncachinsky@gmail.com"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Weverson83\\Banner\\": ""
+        }
+    }
+}
