@@ -11,9 +11,6 @@ use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 
-/**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
- */
 class BannerRepository implements BannerRepositoryInterface
 {
     /**

@@ -1,12 +1,12 @@
 <?php
 namespace Weverson83\Banner\Block;
 
-use Weverson83\Banner\Api\BannerRepositoryInterface;
-use Weverson83\Banner\Api\Data\BannerInterface;
-
+use Magento\Cms\Model\Template\FilterProvider;
 use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\View\Element\Template;
+use Weverson83\Banner\Api\BannerRepositoryInterface;
+use Weverson83\Banner\Api\Data\BannerInterface;
 
 class Banner extends Template implements IdentityInterface
 {
@@ -22,22 +22,28 @@ class Banner extends Template implements IdentityInterface
      * @var BannerInterface
      */
     private $banner;
+    /**
+     * @var FilterProvider
+     */
+    private $filterProvider;
 
     public function __construct(
         BannerRepositoryInterface $bannerRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
+        FilterProvider $filterProvider,
         Template\Context $context,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->bannerRepository = $bannerRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->filterProvider = $filterProvider;
     }
 
     /**
      * Retrieves the first active banner
      *
-     * @return BannerInterface|null
+     * @return BannerInterface|\Weverson83\Banner\Model\Banner
      */
     public function getActiveBanner(): ?BannerInterface
     {
@@ -53,7 +59,7 @@ class Banner extends Template implements IdentityInterface
             }
         }
 
-        return null;
+        return $this->banner;
     }
 
     /**
@@ -63,12 +69,19 @@ class Banner extends Template implements IdentityInterface
      */
     public function getIdentities()
     {
-        $banner = $this->getActiveBanner();
-
-        if ($banner) {
-            return ['banner_id_' . $banner->getId()];
+        if (!($this->getActiveBanner())) {
+            return ['banner_no_banner'];
         }
 
-        return ['banner_no_banner'];
+        return $this->getActiveBanner()->getIdentities();
+    }
+
+    protected function _toHtml()
+    {
+        if (!($this->getActiveBanner())) {
+            return '';
+        }
+
+        return $this->filterProvider->getPageFilter()->filter($this->getActiveBanner()->getContent());
     }
 }

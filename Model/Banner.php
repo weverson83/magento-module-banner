@@ -1,12 +1,12 @@
 <?php
 namespace Weverson83\Banner\Model;
 
+use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Model\AbstractModel;
 use Weverson83\Banner\Api\Data\BannerInterface;
 use Weverson83\Banner\Model\ResourceModel\Banner as BannerResourceModel;
 
-use Magento\Framework\Model\AbstractModel;
-
-class Banner extends AbstractModel implements BannerInterface
+class Banner extends AbstractModel implements BannerInterface, IdentityInterface
 {
     protected function _construct()
     {
@@ -95,5 +95,17 @@ class Banner extends AbstractModel implements BannerInterface
     public function setUpdatedAt($updatedAt)
     {
         return $this->setData(self::UPDATED_AT, $updatedAt);
+    }
+
+    /**
+     * Return unique ID(s) for each object in system
+     *
+     * @return string[]
+     */
+    public function getIdentities()
+    {
+        return [
+            'banner_' . $this->getId(),
+        ];
     }
 }
